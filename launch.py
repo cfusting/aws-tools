@@ -4,9 +4,10 @@ from pprint import pformat
 import time
 import logging
 
-parser = argparse.ArgumentParser(description='Connect to EC2 Instance and attach drive.')
+parser = argparse.ArgumentParser(description='Request EC2 spot instance and attach EBS drive.')
 parser.add_argument('-v', '--verbose', help='Verbose.', action='store_true')
-parser.add_argument('-t', '--type', help='Node type')
+parser.add_argument('-t', '--type', help='Node type.')
+parser.add_argument('-p', '--price', help='Spot price.')
 args = parser.parse_args()
 
 if args.verbose:
@@ -29,7 +30,7 @@ response = ec2.request_spot_instances(
         ],
         'SubnetId': 'subnet-c035a7eb',
     },
-    SpotPrice='0.45',
+    SpotPrice=args.price,
     Type='one-time',
 )
 logging.info(pformat(response))
